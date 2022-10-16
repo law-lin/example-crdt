@@ -1,6 +1,7 @@
 const path = require('path');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const JavaScriptObfuscator = require('webpack-obfuscator');
 
 module.exports = {
   entry: './src/index.ts',
@@ -20,13 +21,21 @@ module.exports = {
           loader: 'babel-loader',
         },
         exclude: /node_modules/,
-      },      
+      },    
     ]
   },
   plugins: [
     new ForkTsCheckerWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: 'public/index.html'
+    }),
+    new JavaScriptObfuscator({
+      rotateStringArray: true
     })
-  ]
+  ],
+  performance: {
+    hints: false,
+    maxEntrypointSize: 512000,
+    maxAssetSize: 512000
+  }
 };
